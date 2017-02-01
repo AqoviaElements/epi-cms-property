@@ -43,15 +43,28 @@
               expect(ajax.url).to.be.equal("/api/episerver/page/testPageId/property/testPropertyName");
             })
 
-            test('content retrieved from epi server is shown as raw html', function(done) {
+            test('text/html content retrieved from epi server is shown as raw html', function(done) {
                 var ajax = element.$.epiServerContentRequest;
 
                 ajax.addEventListener('request', function () {
-                    server.respond('GET', ajax.url, "<h1>testValue</h1>");
+                    server.respond('GET', ajax.url, [200, {"Content-Type": "text/html; charset=utf-8"}, "<h1>testValue</h1>"]);
                 });
 
                 ajax.addEventListener('response', function (e) {
                     expect(element.innerHTML).to.be.equal("<h1>testValue</h1>");
+                    done();
+                });
+            });
+
+            test('Non-"text/html" content retrieved from epi server is shown as text', function(done) {
+                var ajax = element.$.epiServerContentRequest;
+
+                ajax.addEventListener('request', function () {
+                    server.respond('GET', ajax.url, "Some <html Looking > text");
+                });
+
+                ajax.addEventListener('response', function (e) {
+                    expect(element.innerText).to.be.equal("Some <html Looking > text");
                     done();
                 });
             });

@@ -21,7 +21,13 @@
                 },
             },
             handleResponse: function (event, requestWebComponent) {
-                this.innerHTML = requestWebComponent.response; // We don't want Shadow DOM because we want to allow natural styling from rules in parent scope. Need to just overwrite contents to get rid of shadow root, because Polymer doesn't have support for 'no shadow DOM' - https://github.com/Polymer/polymer/issues/222
+                var content = requestWebComponent.response;
+
+                var contentType = requestWebComponent.xhr.getResponseHeader("Content-Type");
+                if(contentType && contentType.toLowerCase().indexOf('text/html') === 0)
+                    this.innerHTML = content; // We don't want Shadow DOM to allow natural styling from rules in parent shadow scope. Polymer doesn't make it easy - https://github.com/Polymer/polymer/issues/222
+                else
+                    this.innerText = content;
             },
         });
     </script>
