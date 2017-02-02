@@ -22,6 +22,7 @@
             },
             handleResponse: function (event, requestWebComponent) {
                 var content = requestWebComponent.response;
+                this.hidden = !content;
 
                 var contentType = requestWebComponent.xhr.getResponseHeader("Content-Type");
                 if(contentType && contentType.toLowerCase().indexOf('text/html') === 0)

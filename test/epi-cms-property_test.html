@@ -41,7 +41,20 @@
             test('iron-ajax properties are as expected', function(){
               var ajax = element.$.epiServerContentRequest;           
               expect(ajax.url).to.be.equal("/api/episerver/page/testPageId/property/testPropertyName");
-            })
+            });
+
+            test('When result is empty then the element is hidden', function(done) {
+                var ajax = element.$.epiServerContentRequest;
+
+                ajax.addEventListener('request', function () {
+                    server.respond('GET', ajax.url, "");
+                });
+
+                ajax.addEventListener('response', function (e) {
+                    expect(element.hidden).to.be.equal(true);
+                    done();
+                });
+            });            
 
             test('text/html content retrieved from epi server is shown as raw html', function(done) {
                 var ajax = element.$.epiServerContentRequest;
