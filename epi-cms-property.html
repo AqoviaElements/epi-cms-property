@@ -3,7 +3,7 @@
 <!-- TODO add loading animation and error handing, e.g. just use ix-loading-ui-placeholder -->
 <dom-module id="epi-cms-property">
     <template>
-        <iron-ajax url$="/api/episerver/page/{{pageId}}/property/{{propertyName}}"
+        <iron-ajax url="/api/episerver/page/[[pageId]]/property/[[propertyName]]"
                    auto handle-as="text" id="epiServerContentRequest"
                    on-response="handleResponse">
         </iron-ajax>
