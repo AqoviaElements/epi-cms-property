@@ -1,0 +1,26 @@
+language: node_js
+dist: trusty
+sudo: required
+node_js: '6'
+addons:
+  firefox: latest
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+before_script:
+- npm install -g bower polylint web-component-tester
+- bower install
+- polylint
+- chmod -R +x ./bower_components/git-version-tagging
+script:
+- xvfb-run wct
+after_success:
+- git config credential.helper "store --file=.git/credentials"
+- echo "https://${GITHUB_TOKEN}:@github.com" > .git/credentials
+- if [ "${TRAVIS_BRANCH}" = "master" ] && [ "${TRAVIS_PULL_REQUEST}" = "false" ];
+  then ./bower_components/git-version-tagging/create-release.sh; fi
+env:
+  global:
+    secure: AXTECSYMFYoB35uB72LKDwFcZfIEpoWLnJ0McAPkT25wZKkZMSTxgySJ6BvIrsuwPvf+34KpzEBs5EzGimRl3H3xsvhqND/euYPTYDCyv+XIlkl5SR1g8v95tEXCVs5o3rShKBj1Pm/jskF31vYE5iUKA2vn6O0mh2cVvB2YMUX+qEcGZ8LAGhH/gBat3iAhlvPQZECtWiJ1pMSTJqDFCUzzEPm2XPHzacKiLgSaWS+g5GikoEzxfZQLgE/aiKXGWERLjCw6nVjbAY/E94Jiy1lWruGumveud9bTmOLjVtVC5hj3L481YikIcVyQYZqumxFzdOfMHXFoBPoIuMjD13pnifC1v3XqIgVvsJvLvh5xUjR4qF7jy9wi2jS8AJ29mTZSbg77ncX/dvdPW7essg37CMaB9pz7rDkoZBnDl8K6DGj8OAO189RAYzaBwbKgRDBG/t/gVYQR8/r7O3fBCcY7zLYgPLCwBgm8ZQZBBweQYGcwp4GKRucpENC26xk2gNgPYAtvQE3se00olqdAq1qMVq73tzsAA6HzDPsypevPolVlJB0VH2QaTgGUncEfVbAbKCAS5LaVJhMCYb7+Xk3DPLwqHIgqL8J7Qr367FwYGWBoY1EcPoPnb1wmAm+seLdf/5xH+qnENhRIwkoFEc9dx2E/vpFFiqrQKpQ33BI=

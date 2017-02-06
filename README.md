@@ -1,3 +1,4 @@
+[![Build status](https://travis-ci.org/AqoviaElements/epi-cms-property.svg?branch=master)](https://travis-ci.org/AqoviaElements/epi-cms-property)
 # \<epi-cms-property\>
 
 
