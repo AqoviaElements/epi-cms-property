@@ -23,9 +23,10 @@
 
     <script>
         suite('epi-cms-property', function () {
-            var server = sinon.fakeServer.create();
+            var server;
             var element;
             setup(function () {
+                server = sinon.fakeServer.create();
                 element = fixture('epi-cms-property-fixture');
             });
 
