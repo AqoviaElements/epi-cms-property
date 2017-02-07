@@ -1,6 +1,24 @@
 {
   "name": "epi-cms-property",
+  "description": "A web component used to retrieve a page property from a page within an Episerver CMS website",
+  "authors": [
+    "Aqovia"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "epi",
+    "cms"
+  ],  
   "main": "epi-cms-property.html",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AqoviaElements/epi-cms-property.git"
+  },  
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/AqoviaElements/epi-cms-property",
+  "ignore": [],  
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0"
   },
