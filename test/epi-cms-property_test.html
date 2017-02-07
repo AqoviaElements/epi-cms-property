@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>epi-cms-property test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <script>
+      window.CMSCurrentPageId = "testPageId";
+    </script>
+    <link rel="import" href="../epi-cms-property.html">
+  </head>
+  <body>
+    <test-fixture id="epi-cms-property-fixture">
+      <template>
+        <epi-cms-property property-name="testPropertyName"></epi-cms-property>
+      </template>
+    </test-fixture>
+
+    <script>
+        suite('epi-cms-property', function () {
+            var server;
+            var element;
+            setup(function () {
+                server = sinon.fakeServer.create();
+                element = fixture('epi-cms-property-fixture');
+            });
+
+            test('instantiating the element works', function () {
+              assert.equal(element.is, 'epi-cms-property');
+            });
+
+            test('element properties are as expected', function(){
+              expect(element.propertyName).to.be.equal("testPropertyName");
+              expect(element.pageId).to.be.equal("testPageId");
+            });
+
+            test('iron-ajax properties are as expected', function(){
+              var ajax = element.$.epiServerContentRequest;           
+              expect(ajax.url).to.be.equal("/api/episerver/page/testPageId/property/testPropertyName");
+            });
+
+            test('When result is empty then the element is hidden', function(done) {
+                var ajax = element.$.epiServerContentRequest;
+
+                ajax.addEventListener('request', function () {
+                    server.respond('GET', ajax.url, "");
+                });
+
+                ajax.addEventListener('response', function (e) {
+                    expect(element.hidden).to.be.equal(true);
+                    done();
+                });
+            });            
+
+            test('text/html content retrieved from epi server is shown as raw html', function(done) {
+                var ajax = element.$.epiServerContentRequest;
+
+                ajax.addEventListener('request', function () {
+                    server.respond('GET', ajax.url, [200, {"Content-Type": "text/html; charset=utf-8"}, "<h1>testValue</h1>"]);
+                });
+
+                ajax.addEventListener('response', function (e) {
+                    expect(element.innerHTML).to.be.equal("<h1>testValue</h1>");
+                    done();
+                });
+            });
+
+            test('Non-"text/html" content retrieved from epi server is shown as text', function(done) {
+                var ajax = element.$.epiServerContentRequest;
+
+                ajax.addEventListener('request', function () {
+                    server.respond('GET', ajax.url, "Some <html Looking > text");
+                });
+
+                ajax.addEventListener('response', function (e) {
+                    expect(element.innerText).to.be.equal("Some <html Looking > text");
+                    done();
+                });
+            });
+        });
+    </script>
+  </body>
+</html>

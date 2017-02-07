@@ -1,0 +1,35 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<!-- TODO add loading animation and error handing, e.g. just use ix-loading-ui-placeholder -->
+<dom-module id="epi-cms-property">
+    <template>
+        <iron-ajax url="/api/episerver/page/[[pageId]]/property/[[propertyName]]"
+                   auto handle-as="text" id="epiServerContentRequest"
+                   on-response="handleResponse">
+        </iron-ajax>
+    </template>
+    <script>
+        Polymer({
+            is: 'epi-cms-property',
+            properties: {
+                propertyName: {
+                    type: String
+                },
+                pageId: { /** Optional */
+                    type: String,
+                    value: function () { return window.CMSCurrentPageId; },
+                },
+            },
+            handleResponse: function (event, requestWebComponent) {
+                var content = requestWebComponent.response;
+                this.hidden = !content;
+
+                var contentType = requestWebComponent.xhr.getResponseHeader("Content-Type");
+                if(contentType && contentType.toLowerCase().indexOf('text/html') === 0)
+                    this.innerHTML = content; // We don't want Shadow DOM to allow natural styling from rules in parent shadow scope. Polymer doesn't make it easy - https://github.com/Polymer/polymer/issues/222
+                else
+                    this.innerText = content;
+            },
+        });
+    </script>
+</dom-module>
