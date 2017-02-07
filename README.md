@@ -1,39 +1,23 @@
 [![Build status](https://travis-ci.org/AqoviaElements/epi-cms-property.svg?branch=master)](https://travis-ci.org/AqoviaElements/epi-cms-property)
-# \<epi-cms-property\>
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/AqoviaElements/epi-cms-property)
 
+## &lt;epi-cms-property&gt;
 
+`<epi-cms-property>` is a web component used to retrieve a page property from a page within an Episerver CMS website.
 
-## Install the Polymer-CLI
+### Usage:
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+A global variable named `'CMSCurrentPageId'` should be set on each page on which the web component is used, containing the page's Page ID.
+Then, simply provide the component with the name of the page property as an attribute, and the content will be rendered:
 
-## Viewing Your Application
+```html
+<script>
+    window.CMSCurrentPageId = "pageId";
+</script>
 
-```
-$ polymer serve
-```
-
-## Building Your Application
-
-```
-$ polymer build
-```
-
-This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
-containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
-CSS, and JS optimizers.
-
-You can serve the built versions by giving `polymer serve` a folder to serve
-from:
-
-```
-$ polymer serve build/bundled
+<epi-cms-property property-name="nameOfProperty"></epi-cms-property>
 ```
 
-## Running Tests
+Note. The endpoint at which the component will attempt to retrieve the Episerver content from, is:
+`/api/episerver/page/[pageId]/property/[propertyName]`
 
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
