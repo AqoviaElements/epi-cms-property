@@ -7,15 +7,13 @@
 
 ### Usage:
 
-A global variable named `'CMSCurrentPageId'` should be set on each page on which the web component is used, containing the page's Page ID.
+An ancestor element with "cms-page-id" attribute should be set on each page on which the web component is used, containing the page's Page ID.
 Then, simply provide the component with the name of the page property as an attribute, and the content will be rendered:
 
 ```html
-<script>
-    window.CMSCurrentPageId = "pageId";
-</script>
-
-<epi-cms-property property-name="nameOfProperty"></epi-cms-property>
+<body cms-page-id="pageId">
+    <epi-cms-property property-name="nameOfProperty"></epi-cms-property>
+</body>
 ```
 
 Note. The endpoint at which the component will attempt to retrieve the Episerver content from, is:
