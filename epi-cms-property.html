@@ -1,9 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../properties-from-ancestor-behavior/properties-from-ancestor-behavior.html">
 <!-- TODO add loading animation and error handing, e.g. just use ix-loading-ui-placeholder -->
 <dom-module id="epi-cms-property">
     <template>
-        <iron-ajax url="/api/episerver/page/[[pageId]]/property/[[propertyName]]"
+        <iron-ajax url="[[_url]]"
                    auto handle-as="text" id="epiServerContentRequest"
                    on-response="handleResponse">
         </iron-ajax>
@@ -11,14 +12,25 @@
     <script>
         Polymer({
             is: 'epi-cms-property',
+            behaviors: [
+                PropertiesFromAncestorBehavior({
+                    /** Id of the CMS page that holds the property - Look for "cms-page-id" in container HTML to see where it's declared. If none is found, will fall back to global variable cmsPageId.
+                        Remarks: The property name needs be 'cms*' and not 'CMS*' because Polymer generates the invalid '-' at the beginning
+                    */ 
+                    cmsPageId: { defaultValue: window.cmsPageId, },
+                }),
+            ],
             properties: {
                 propertyName: {
                     type: String
                 },
-                pageId: { /** Optional */
+                _url: {
                     type: String,
-                    value: function () { return window.CMSCurrentPageId; },
+                    computed: '_computeUrl(cmsPageId, propertyName)'
                 },
+            },
+            _computeUrl: function (cmsPageId, propertyName) {
+                return cmsPageId && ('/api/episerver/page/' + cmsPageId + '/property/' + propertyName);
             },
             handleResponse: function (event, requestWebComponent) {
                 var content = requestWebComponent.response;
