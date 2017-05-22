@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -9,16 +9,15 @@
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <script>
-      window.CMSCurrentPageId = "testPageId";
-    </script>
     <link rel="import" href="../epi-cms-property.html">
   </head>
   <body>
     <test-fixture id="epi-cms-property-fixture">
-      <template>
-        <epi-cms-property property-name="testPropertyName"></epi-cms-property>
-      </template>
+        <template>
+            <div cms-page-id="testPageId">
+                <epi-cms-property property-name="testPropertyName"></epi-cms-property>
+            </div>
+        </template>
     </test-fixture>
 
     <script>
@@ -27,7 +26,7 @@
             var element;
             setup(function () {
                 server = sinon.fakeServer.create();
-                element = fixture('epi-cms-property-fixture');
+                element = fixture('epi-cms-property-fixture').querySelector('epi-cms-property');
             });
 
             test('instantiating the element works', function () {
@@ -36,7 +35,7 @@
 
             test('element properties are as expected', function(){
               expect(element.propertyName).to.be.equal("testPropertyName");
-              expect(element.pageId).to.be.equal("testPageId");
+              expect(element.cmsPageId).to.be.equal("testPageId");
             });
 
             test('iron-ajax properties are as expected', function(){
