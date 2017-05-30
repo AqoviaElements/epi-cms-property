@@ -21,7 +21,7 @@
   "ignore": [],  
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
-    "properties-from-ancestor-behavior": "~1.0"
+    "properties-from-ancestor-behavior": "^1.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
